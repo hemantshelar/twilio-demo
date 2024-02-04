@@ -1,26 +1,58 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MSAL_INSTANCE, MsalModule, MsalService } from '@azure/msal-angular';
+import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication({
+    auth: {
+      clientId: '36133e40-92e3-489d-96b1-45b9bd255499',
+      redirectUri: 'http://localhost:4200/'
+    }
+  });
+}
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CommonModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    MsalModule
+  ],
+  providers: [
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory
+    },
+    MsalService
+  ],
+
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'twilio-deomo';
   loggedIn = false;
-  public isLoggedIn(){
-    return this.loggedIn;
+
+  constructor(private msalService: MsalService) {
+  }
+  ngOnInit(): void {
+    this.msalService.initialize().subscribe(res => {
+      alert('init done!');
+
+    });
   }
 
-  onLogInClicked(){
-    this.loggedIn = true;
+  onLogInClicked() {
+    this.msalService.loginPopup().subscribe(res => {
+      if (res != null && res.account != null) {
+        this.loggedIn = true;
+      }
+    })
   }
 
-  onLogOutClicked(){
+  onLogOutClicked() {
     this.loggedIn = false;
   }
 
