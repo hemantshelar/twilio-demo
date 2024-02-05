@@ -8,7 +8,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: '36133e40-92e3-489d-96b1-45b9bd255499',
-      redirectUri: 'http://localhost:4200/'
+      redirectUri: 'http://localhost:4200/',
+
     }
   });
 }
@@ -39,13 +40,19 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     this.msalService.initialize().subscribe(res => {
-      alert('init done!');
+      console.log('init done.');
 
     });
   }
 
   onLogInClicked() {
-    this.msalService.loginPopup().subscribe(res => {
+    console.log('onlgin clicked');
+    this.msalService.loginPopup({
+      scopes: [
+        'api://94b7ddc6-1835-44a6-844b-f2d8b36a6971/Core6APIScope/PublicScope',
+        //'api://94b7ddc6-1835-44a6-844b-f2d8b36a6971/Core6APIScope/PrivateScope'
+      ]
+    }).subscribe(res => {
       if (res != null && res.account != null) {
         this.loggedIn = true;
       }
@@ -54,6 +61,10 @@ export class AppComponent implements OnInit{
 
   onLogOutClicked() {
     this.loggedIn = false;
+  }
+
+  onTestClicked(){
+    console.log('test clicked');
   }
 
 }
