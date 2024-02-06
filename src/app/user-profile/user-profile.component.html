@@ -1,0 +1,31 @@
+<div class="container mt-1">
+    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#rawAuthProfile">Show/Hide Object</button>
+    <div id="rawAuthProfile">
+        <button class="btn btn-primary" (click)="getAuthObject()">GetAuthObect</button>
+        Auth Object is:
+        {{this.authObject | json}}
+    </div>
+    <div class="mb-3 row">
+        <label for="authority" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" [value]="authObject.authority != undefined ? authObject.authority : ''">
+        </div>
+    </div>
+    <!-- <div class="mb-3 row">
+        <label for="authority" class="col-sm-2 col-form-label">username</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="username" [value]="authObject.account.username">
+        </div>
+    </div>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let item of authObject.scopes" >{{item}}</li>
+        </ul>
+    </div>
+    <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword">
+        </div>
+    </div>-->
+</div>
